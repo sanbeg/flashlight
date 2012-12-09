@@ -17,7 +17,7 @@ public class FlashLightActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-    }
+     }
     
     @Override
     public void onResume(){
@@ -30,6 +30,12 @@ public class FlashLightActivity extends Activity {
     	camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
     	camera.setParameters(camera_parameters);
     	
+        ToggleButton the_button = (ToggleButton) findViewById(R.id.flashlightButton);
+        if (the_button.isChecked()){
+            camera.startPreview();
+            the_button.setKeepScreenOn(true);
+        }
+
     }
     @Override
     public void onPause(){

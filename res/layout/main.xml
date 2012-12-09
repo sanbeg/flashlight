@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ToggleButton
-        android:id="@+id/toggleButton1"
+        android:id="@+id/flashlightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onToggleClicked"
