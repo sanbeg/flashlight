@@ -9,7 +9,8 @@ import android.widget.ToggleButton;
 public class FlashLightActivity extends Activity {
     private Camera camera=null;
     private Camera.Parameters camera_parameters;
-    String flash_mode;
+    private String flash_mode;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class FlashLightActivity extends Activity {
     	flash_mode = camera_parameters.getFlashMode();
     	camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
     	camera.setParameters(camera_parameters);
+    	
     }
     @Override
     public void onPause(){
@@ -37,13 +39,14 @@ public class FlashLightActivity extends Activity {
         camera.release();
         camera=null;	
     }
-    public void onToggleClicked(View v) {
+    public void onToggleClicked(View v) {   	
         if (((ToggleButton) v).isChecked()) {
          	camera.setParameters(camera_parameters);
             camera.startPreview();
-
+            v.setKeepScreenOn(true);
         } else {
             camera.stopPreview();
+            v.setKeepScreenOn(false);
         }
     }
     
