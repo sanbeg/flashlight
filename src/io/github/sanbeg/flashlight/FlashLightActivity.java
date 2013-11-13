@@ -41,10 +41,18 @@ public class FlashLightActivity extends Activity {
     @Override
     public void onPause(){
     	super.onPause();
-    	camera_parameters.setFlashMode(flash_mode);
-    	camera.setParameters(camera_parameters);
-        camera.release();
-        camera=null;	
+
+    	if (flash_mode != null){
+    		//could be null if no flash, i.e. emulator   		
+    		camera_parameters.setFlashMode(flash_mode);
+    	} else {
+    		camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+    	}
+    	if (camera != null) {
+    		camera.setParameters(camera_parameters);
+    		camera.release();
+    		camera=null;
+    	}
     }
     public void onToggleClicked(View v) {   	
         if (((ToggleButton) v).isChecked()) {

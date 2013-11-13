@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, FlashLightActivity!</string>
-    <string name="app_name">FlashLight</string>
+    <string name="app_name">Open FlashLight</string>
 
 </resources>
