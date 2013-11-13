@@ -1,10 +1,11 @@
-package com.nfshost.sanbeg.flashlight;
+package io.github.sanbeg.flashlight;
 
 import android.app.Activity;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ToggleButton;
+import io.github.sanbeg.flashlight.R;
 
 public class FlashLightActivity extends Activity {
     private Camera camera=null;
