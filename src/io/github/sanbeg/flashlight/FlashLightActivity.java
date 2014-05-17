@@ -68,5 +68,5 @@ public class FlashLightActivity extends Activity {
             v.setKeepScreenOn(false);
         }
     }
-    
+
 }
