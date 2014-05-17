@@ -26,13 +26,18 @@ public class FlashLightActivity extends Activity {
     	if (camera==null)
     		camera=Camera.open();
 
+    	if (camera==null) return;
+    	
     	camera_parameters = camera.getParameters();
     	flash_mode = camera_parameters.getFlashMode();
-    	camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-    	camera.setParameters(camera_parameters);
+    	if (flash_mode == null)
+    		//could be null if no flash, i.e. emulator 
+    		flash_mode = Camera.Parameters.FLASH_MODE_OFF;
     	
         ToggleButton the_button = (ToggleButton) findViewById(R.id.flashlightButton);
         if (the_button.isChecked()){
+        	camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        	camera.setParameters(camera_parameters);
             camera.startPreview();
             the_button.setKeepScreenOn(true);
         }
@@ -42,12 +47,8 @@ public class FlashLightActivity extends Activity {
     public void onPause(){
     	super.onPause();
 
-    	if (flash_mode != null){
-    		//could be null if no flash, i.e. emulator   		
-    		camera_parameters.setFlashMode(flash_mode);
-    	} else {
-    		camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-    	}
+		camera_parameters.setFlashMode(flash_mode);
+
     	if (camera != null) {
     		camera.setParameters(camera_parameters);
     		camera.release();
@@ -56,11 +57,14 @@ public class FlashLightActivity extends Activity {
     }
     public void onToggleClicked(View v) {   	
         if (((ToggleButton) v).isChecked()) {
+        	camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
          	camera.setParameters(camera_parameters);
             camera.startPreview();
             v.setKeepScreenOn(true);
         } else {
             camera.stopPreview();
+    		camera_parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+         	camera.setParameters(camera_parameters);
             v.setKeepScreenOn(false);
         }
     }
