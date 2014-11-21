@@ -6,8 +6,8 @@ and whistles, and without needing Internet access, display ads, etc.
 So there it is.  Just like a real flashlight, the entire UI consists of a single button.  Pressing it will turn the 
 light on and off.
 
-It doesn't have any other features, or attempt to work with obscure devices or old android versions.  So far it's only
-been tested on a Samsung Droid Charge running Android 2.3.6, but it should work on most common 
+It doesn't have any other features, or attempt to work with obscure devices or old android versions.  It's primarily
+been tested on a Samsung Droid Charge (Android 2.3.6) and Galaxy S4 mini, but it should work on most common 
 devices.
 
 
