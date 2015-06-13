@@ -9,7 +9,7 @@ import android.widget.ToggleButton;
 public class FlashLightActivity extends Activity {
     private final Flash flash = new Flash();
     private View background;
-    private ToggleButton the_button;
+    private ToggleButton theButton;
 
     /** Called when the activity is first created. */
     @Override
@@ -18,16 +18,16 @@ public class FlashLightActivity extends Activity {
         setContentView(R.layout.main);
         background = findViewById(R.id.backgroundLayout);
         background.setOnLongClickListener(new LongClickListener());
-        the_button = (ToggleButton) findViewById(R.id.flashlightButton);
+        theButton = (ToggleButton) findViewById(R.id.flashlightButton);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //flash.open();
-        if (the_button.isChecked()) {
+        if (theButton.isChecked()) {
             flash.on();
-            the_button.setKeepScreenOn(true);
+            theButton.setKeepScreenOn(true);
             background.setBackgroundColor(Color.WHITE);
         } else {
             background.setBackgroundColor(Color.BLACK);
@@ -58,8 +58,8 @@ public class FlashLightActivity extends Activity {
         @Override
         public boolean onLongClick(View view){
             //view.setBackgroundColor(Color.WHITE);
-            the_button.setChecked(!the_button.isChecked());
-            onToggleClicked(the_button);
+            theButton.setChecked(!theButton.isChecked());
+            onToggleClicked(theButton);
             return true;
         }
     }
