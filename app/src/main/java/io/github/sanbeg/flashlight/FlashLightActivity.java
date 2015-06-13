@@ -2,6 +2,7 @@ package io.github.sanbeg.flashlight;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ToggleButton;
@@ -10,6 +11,7 @@ public class FlashLightActivity extends Activity {
     private final Flash flash = new Flash();
     private View background;
     private ToggleButton theButton;
+    private Drawable dark;
 
     /** Called when the activity is first created. */
     @Override
@@ -18,6 +20,7 @@ public class FlashLightActivity extends Activity {
         setContentView(R.layout.main);
         background = findViewById(R.id.backgroundLayout);
         background.setOnLongClickListener(new LongClickListener());
+        dark = background.getBackground();
         theButton = (ToggleButton) findViewById(R.id.flashlightButton);
     }
 
@@ -30,7 +33,7 @@ public class FlashLightActivity extends Activity {
             theButton.setKeepScreenOn(true);
             background.setBackgroundColor(Color.WHITE);
         } else {
-            background.setBackgroundColor(Color.BLACK);
+            background.setBackgroundDrawable(dark);
         }
     }
 
@@ -50,7 +53,7 @@ public class FlashLightActivity extends Activity {
             //flash.off();
             flash.close();
             v.setKeepScreenOn(false);
-            background.setBackgroundColor(Color.BLACK);
+            background.setBackgroundDrawable(dark);
         }
     }
 
