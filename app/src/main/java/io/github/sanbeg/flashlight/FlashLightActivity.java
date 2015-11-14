@@ -3,8 +3,10 @@ package io.github.sanbeg.flashlight;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class FlashLightActivity extends Activity {
@@ -13,7 +15,20 @@ public class FlashLightActivity extends Activity {
     private ToggleButton theButton;
     private Drawable dark;
 
-    /** Called when the activity is first created. */
+    public class FlashTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return flash.on();
+        }
+        @Override
+        protected void onPostExecute(Boolean success) {
+            theButton.setEnabled(true);
+            if (! success) {
+                Toast.makeText(FlashLightActivity.this, "Failed to access camera.", Toast.LENGTH_SHORT);
+            }
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +42,13 @@ public class FlashLightActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        //flash.open();
         if (theButton.isChecked()) {
-            flash.on();
-            theButton.setKeepScreenOn(true);
+            theButton.setEnabled(false);
+            new FlashTask().execute();
             background.setBackgroundColor(Color.WHITE);
+            theButton.setKeepScreenOn(true);
         } else {
+            flash.off();
             background.setBackgroundDrawable(dark);
         }
     }
@@ -45,13 +61,11 @@ public class FlashLightActivity extends Activity {
 
     public void onToggleClicked(View v) {
         if (((ToggleButton) v).isChecked()) {
-            flash.open();
-            flash.on();
+            new FlashTask().execute();
             v.setKeepScreenOn(true);
             background.setBackgroundColor(Color.WHITE);
         } else {
-            //flash.off();
-            flash.close();
+            flash.off();
             v.setKeepScreenOn(false);
             background.setBackgroundDrawable(dark);
         }
@@ -60,7 +74,6 @@ public class FlashLightActivity extends Activity {
     public class LongClickListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View view){
-            //view.setBackgroundColor(Color.WHITE);
             theButton.setChecked(!theButton.isChecked());
             onToggleClicked(theButton);
             return true;

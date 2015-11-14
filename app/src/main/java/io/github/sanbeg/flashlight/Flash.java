@@ -1,48 +1,93 @@
 package io.github.sanbeg.flashlight;
 
 import android.hardware.Camera;
+import android.util.Log;
 
-public class Flash {
-    private Camera camera = null;
-    private Camera.Parameters cameraParameters;
+import java.io.Closeable;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-    private String previousFlashMode = null;
+public class Flash implements Closeable {
+    private static final String TAG = "FLASH";
 
-    public synchronized void open() {
-        camera = Camera.open();
-        if (camera != null) {
-            cameraParameters = camera.getParameters();
-            previousFlashMode = cameraParameters.getFlashMode();
-        }
-        if (previousFlashMode == null) {
-            // could be null if no flash, i.e. emulator
-            previousFlashMode = Camera.Parameters.FLASH_MODE_OFF;
-        }
-    }
+    private static class CameraHolder {
+        public final Camera camera;
+        private final Camera.Parameters cameraParameters;
 
-    public synchronized void close() {
-        if (camera != null) {
-            cameraParameters.setFlashMode(previousFlashMode);
-            camera.setParameters(cameraParameters);
-            camera.release();
-            camera = null;
-        }
-    }
-
-    public synchronized void on() {
-        if (camera != null) {
+        public CameraHolder(Camera camera) {
+            this.camera = camera;
+            this.cameraParameters = camera.getParameters();
             cameraParameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        }
+
+        public void on() {
             camera.setParameters(cameraParameters);
             camera.startPreview();
         }
     }
 
-    public synchronized void off() {
-        if (camera != null) {
-            camera.stopPreview();
-            cameraParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            camera.setParameters(cameraParameters);
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Future<CameraHolder> futureCamera;
+
+    public static class CameraCallable implements Callable<CameraHolder> {
+        private final Camera oldCamera;
+
+        public CameraCallable(Camera camera) {
+            oldCamera = camera;
         }
+        @Override
+        public CameraHolder call() throws Exception {
+            if (oldCamera != null) {
+                oldCamera.release();
+            }
+            return new CameraHolder(Camera.open());
+        }
+    }
+
+    public synchronized void off() {
+        if (futureCamera == null) {
+            futureCamera = executorService.submit(new CameraCallable(null));
+        } else if (futureCamera.isDone()) {
+            Camera prev;
+            try {
+                prev = futureCamera.get().camera;
+            } catch (Exception e) {
+                prev = null;
+            }
+            futureCamera = executorService.submit(new CameraCallable(prev));
+        }
+    }
+
+    public synchronized boolean on() {
+        Log.i(TAG, "Got button press");
+        if (futureCamera == null) {
+            Log.w(TAG, "Camera is null");
+            futureCamera = executorService.submit(new CameraCallable(null));
+        }
+        if (!futureCamera.isDone()) {
+            Log.i(TAG, "Waiting for camera");
+        }
+        try {
+            futureCamera.get().on();
+            Log.i(TAG, "Light is on");
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to activate flash", e);
+            return false;
+        }
+        return true;
+    }
+
+    public synchronized void close() {
+        if (futureCamera != null) {
+            try {
+                futureCamera.get().camera.release();
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to release camera", e);
+            }
+        }
+        futureCamera = null;
     }
 
 }
