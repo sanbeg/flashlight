@@ -54,14 +54,12 @@ public class FlashLightActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-             switch (item.getItemId()) {
-
-        case R.id.settings:
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivityForResult(i, 0);
-            break;
+        switch (item.getItemId()) {
+            case R.id.settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
-
         return true;
     }
 
