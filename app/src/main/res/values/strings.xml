@@ -2,5 +2,12 @@
 <resources>
 
     <string name="app_name">Open FlashLight</string>
+    <string name="title_activity_settings">Settings</string>
 
+    <!-- Strings related to Settings -->
+    <string name="pref_long_press_title">Toggle With Long Press</string>
+    <string name="pref_long_press_summary">Toggle flashlight with a long press anywhere on the screen</string>
+
+    <string name="white_title">White When On</string>
+    <string name="white_summary">Turn the background white when the light is on.</string>
 </resources>
