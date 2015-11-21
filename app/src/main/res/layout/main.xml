@@ -8,8 +8,8 @@
 
     <ToggleButton
         android:id="@+id/flashlightButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="180dp"
         android:onClick="onToggleClicked"
         android:text="ToggleButton" />
 

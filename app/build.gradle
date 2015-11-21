@@ -8,17 +8,19 @@ android {
         applicationId "io.github.sanbeg.flashlight"
         minSdkVersion 8
         targetSdkVersion 10
+        resConfig "en"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 dependencies {
     //compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    //compile 'com.android.support:support-v4:23.1.1'
 }
