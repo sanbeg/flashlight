@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     android:id="@+id/backgroundLayout">
 
     <ToggleButton
         android:id="@+id/flashlightButton"
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="onToggleClicked"
-        android:text="ToggleButton"
-        app:layout_widthPercent="30%"
-        app:layout_aspectRatio="100%"
-        />
+        android:text="ToggleButton" />
 
-</android.support.percent.PercentRelativeLayout>
+</LinearLayout>
