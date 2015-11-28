@@ -1,5 +1,6 @@
 package io.github.sanbeg.flashlight;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -7,14 +8,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class FlashLightActivity extends AppCompatActivity {
+public class FlashLightActivity extends Activity {
     private final Flash flash = new Flash();
     private View background;
     private ToggleButton theButton;
