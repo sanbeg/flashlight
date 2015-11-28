@@ -8,9 +8,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -44,6 +48,14 @@ public class FlashLightActivity extends Activity {
         dark = background.getBackground();
         theButton = (ToggleButton) findViewById(R.id.flashlightButton);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        ImageSpan imageSpan = new ImageSpan(this, R.drawable.power_symbol);
+        SpannableString content = new SpannableString("X");
+        content.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        theButton.setText(content);
+        theButton.setTextOn(content);
+        theButton.setTextOff(content);
     }
 
     @Override
@@ -86,7 +98,7 @@ public class FlashLightActivity extends Activity {
     }
 
     public void onToggleClicked(View v) {
-        if (((ToggleButton) v).isChecked()) {
+        if (((CompoundButton) v).isChecked()) {
             new FlashTask().execute();
             v.setKeepScreenOn(true);
             if (sharedPreferences.getBoolean("white", true)) {
