@@ -14,7 +14,7 @@ import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.view.ViewParent;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -43,10 +43,16 @@ public class FlashLightActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        background = findViewById(R.id.backgroundLayout);
-        background.setOnLongClickListener(new LongClickListener());
-        dark = background.getBackground();
+
         theButton = (ToggleButton) findViewById(R.id.flashlightButton);
+
+        ViewParent vp = theButton.getParent();
+        if (vp instanceof View) {
+            background = (View) vp;
+            background.setOnLongClickListener(new LongClickListener());
+            dark = background.getBackground();
+        }
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         ImageSpan imageSpan = new ImageSpan(this, R.drawable.power_symbol);
@@ -81,13 +87,15 @@ public class FlashLightActivity extends Activity {
         if (theButton.isChecked()) {
             theButton.setEnabled(false);
             new FlashTask().execute();
-            if (sharedPreferences.getBoolean("white", true)) {
+            if (sharedPreferences.getBoolean("white", true) && background != null) {
                 background.setBackgroundColor(Color.WHITE);
             }
             theButton.setKeepScreenOn(true);
         } else {
             flash.off();
-            background.setBackgroundDrawable(dark);
+            if (background != null) {
+                background.setBackgroundDrawable(dark);
+            }
         }
     }
 
@@ -98,16 +106,18 @@ public class FlashLightActivity extends Activity {
     }
 
     public void onToggleClicked(View v) {
-        if (((CompoundButton) v).isChecked()) {
+        if (theButton.isChecked()) {
             new FlashTask().execute();
             v.setKeepScreenOn(true);
-            if (sharedPreferences.getBoolean("white", true)) {
+            if (sharedPreferences.getBoolean("white", true) && background != null) {
                 background.setBackgroundColor(Color.WHITE);
             }
         } else {
             flash.off();
             v.setKeepScreenOn(false);
-            background.setBackgroundDrawable(dark);
+            if (background != null) {
+                background.setBackgroundDrawable(dark);
+            }
         }
     }
 
