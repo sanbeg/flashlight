@@ -19,10 +19,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class FlashLightActivity extends Activity {
+    private static final String LONG_PRESS = "long_press";
+    public static final String WHITE = "white";
     private final Flash flash = new Flash();
     private View background;
     private ToggleButton theButton;
     private Drawable dark;
+    private boolean changeColor = false;
+
     private SharedPreferences sharedPreferences;
 
     public class FlashTask extends AsyncTask<Void, Void, Boolean> {
@@ -45,15 +49,35 @@ public class FlashLightActivity extends Activity {
         setContentView(R.layout.main);
 
         theButton = (ToggleButton) findViewById(R.id.flashlightButton);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         ViewParent vp = theButton.getParent();
         if (vp instanceof View) {
             background = (View) vp;
+            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
             background.setOnLongClickListener(new LongClickListener());
             dark = background.getBackground();
-        }
+            changeColor = sharedPreferences.getBoolean(WHITE, false);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    switch (key) {
+                        case LONG_PRESS:
+                            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
+                            break;
+                        case WHITE:
+                            changeColor = sharedPreferences.getBoolean(WHITE, false);
+                            if (changeColor && theButton.isChecked()) {
+                                background.setBackgroundColor(Color.WHITE);
+                            } else {
+                                background.setBackgroundDrawable(dark);
+                            }
+                            break;
+                    }
+                }
+            });
+        }
 
         ImageSpan imageSpan = new ImageSpan(this, R.drawable.power_symbol);
         SpannableString content = new SpannableString("X");
@@ -87,7 +111,7 @@ public class FlashLightActivity extends Activity {
         if (theButton.isChecked()) {
             theButton.setEnabled(false);
             new FlashTask().execute();
-            if (sharedPreferences.getBoolean("white", true) && background != null) {
+            if (changeColor) {
                 background.setBackgroundColor(Color.WHITE);
             }
             theButton.setKeepScreenOn(true);
@@ -109,7 +133,7 @@ public class FlashLightActivity extends Activity {
         if (theButton.isChecked()) {
             new FlashTask().execute();
             v.setKeepScreenOn(true);
-            if (sharedPreferences.getBoolean("white", true) && background != null) {
+            if (changeColor) {
                 background.setBackgroundColor(Color.WHITE);
             }
         } else {
@@ -123,13 +147,9 @@ public class FlashLightActivity extends Activity {
 
     public class LongClickListener implements View.OnLongClickListener {
         @Override
-        public boolean onLongClick(View view){
-
-            boolean long_press = sharedPreferences.getBoolean("long_press", false);
-            if (long_press) {
-                theButton.setChecked(!theButton.isChecked());
-                onToggleClicked(theButton);
-            }
+        public boolean onLongClick(View view) {
+            theButton.setChecked(!theButton.isChecked());
+            onToggleClicked(theButton);
             return true;
         }
     }

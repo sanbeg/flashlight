@@ -11,4 +11,6 @@
     <string name="white_title">White When On</string>
     <string name="white_summary">Turn the background white when the light is on.</string>
     <string name="title_menu_settings">settings</string>
+    <string name="pref_long_press">long_press</string>
+    <string name="pref_white">white</string>
 </resources>
