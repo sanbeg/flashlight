@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <ToggleButton
-        android:id="@+id/flashlightButton"
-        android:layout_width="128dp"
-        android:layout_height="192dp"
-        android:onClick="onToggleClicked"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textOn=""
-        android:textOff=""
-        />
-</merge>
+<ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flashlightButton"
+    android:layout_width="128dp"
+    android:layout_height="192dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:onClick="onToggleClicked" />
