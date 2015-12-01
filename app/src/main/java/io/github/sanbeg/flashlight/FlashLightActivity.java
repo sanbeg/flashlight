@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,8 @@ import android.view.ViewParent;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class FlashLightActivity extends Activity {
+public class FlashLightActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String TAG = "FlashLightActivity";
     private static final String LONG_PRESS = "long_press";
     public static final String WHITE = "white";
     private final Flash flash = new Flash();
@@ -54,29 +56,8 @@ public class FlashLightActivity extends Activity {
         ViewParent vp = theButton.getParent();
         if (vp instanceof View) {
             background = (View) vp;
-            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
             background.setOnLongClickListener(new LongClickListener());
             dark = background.getBackground();
-            changeColor = sharedPreferences.getBoolean(WHITE, false);
-
-            sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    switch (key) {
-                        case LONG_PRESS:
-                            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
-                            break;
-                        case WHITE:
-                            changeColor = sharedPreferences.getBoolean(WHITE, false);
-                            if (changeColor && theButton.isChecked()) {
-                                background.setBackgroundColor(Color.WHITE);
-                            } else {
-                                background.setBackgroundDrawable(dark);
-                            }
-                            break;
-                    }
-                }
-            });
         }
 
         ImageSpan imageSpan = new ImageSpan(this, R.drawable.power_symbol);
@@ -88,6 +69,23 @@ public class FlashLightActivity extends Activity {
         theButton.setTextOff(content);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.i(TAG, "Changed pref: " + key);
+        switch (key) {
+            case LONG_PRESS:
+                background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
+                break;
+            case WHITE:
+                changeColor = sharedPreferences.getBoolean(WHITE, false);
+                if (changeColor && theButton.isChecked()) {
+                    background.setBackgroundColor(Color.WHITE);
+                } else {
+                    background.setBackgroundDrawable(dark);
+                }
+                break;
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
@@ -108,6 +106,13 @@ public class FlashLightActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (background != null) {
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+            changeColor = sharedPreferences.getBoolean(WHITE, false);
+            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
+        }
+
         if (theButton.isChecked()) {
             theButton.setEnabled(false);
             new FlashTask().execute();
@@ -126,6 +131,7 @@ public class FlashLightActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
         flash.close();
     }
 
