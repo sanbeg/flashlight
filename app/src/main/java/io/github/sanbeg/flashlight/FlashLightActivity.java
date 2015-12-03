@@ -40,8 +40,37 @@ public class FlashLightActivity extends Activity implements SharedPreferences.On
         protected void onPostExecute(Boolean success) {
             theButton.setEnabled(true);
             if (! success) {
-                Toast.makeText(FlashLightActivity.this, "Failed to access camera.", Toast.LENGTH_SHORT);
+                Toast.makeText(FlashLightActivity.this, "Failed to access camera.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    public class WhiteTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return sharedPreferences.getBoolean(WHITE, false);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            changeColor = aBoolean;
+            if (changeColor && theButton.isChecked()) {
+                background.setBackgroundColor(Color.WHITE);
+            } else {
+                background.setBackgroundDrawable(dark);
+            }
+        }
+    }
+
+    public class PressTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return sharedPreferences.getBoolean(LONG_PRESS, false);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            background.setLongClickable(aBoolean);
         }
     }
 
@@ -58,6 +87,9 @@ public class FlashLightActivity extends Activity implements SharedPreferences.On
             background = (View) vp;
             background.setOnLongClickListener(new LongClickListener());
             dark = background.getBackground();
+        } else {
+            Log.e(TAG, "Background isn't a view!");
+            background = new View(this);
         }
 
         ImageSpan imageSpan = new ImageSpan(this, R.drawable.power_symbol);
@@ -74,15 +106,10 @@ public class FlashLightActivity extends Activity implements SharedPreferences.On
         Log.i(TAG, "Changed pref: " + key);
         switch (key) {
             case LONG_PRESS:
-                background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
+                new PressTask().execute();
                 break;
             case WHITE:
-                changeColor = sharedPreferences.getBoolean(WHITE, false);
-                if (changeColor && theButton.isChecked()) {
-                    background.setBackgroundColor(Color.WHITE);
-                } else {
-                    background.setBackgroundDrawable(dark);
-                }
+                new WhiteTask().execute();
                 break;
         }
     }
@@ -106,26 +133,18 @@ public class FlashLightActivity extends Activity implements SharedPreferences.On
     @Override
     public void onResume() {
         super.onResume();
-
-        if (background != null) {
-            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-            changeColor = sharedPreferences.getBoolean(WHITE, false);
-            background.setLongClickable(sharedPreferences.getBoolean(LONG_PRESS, false));
-        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         if (theButton.isChecked()) {
             theButton.setEnabled(false);
             new FlashTask().execute();
-            if (changeColor) {
-                background.setBackgroundColor(Color.WHITE);
-            }
             theButton.setKeepScreenOn(true);
         } else {
             flash.off();
-            if (background != null) {
-                background.setBackgroundDrawable(dark);
-            }
         }
+
+        new PressTask().execute();
+        new WhiteTask().execute();
     }
 
     @Override
