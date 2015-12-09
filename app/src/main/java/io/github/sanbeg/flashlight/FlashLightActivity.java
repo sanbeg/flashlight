@@ -121,9 +121,14 @@ public class FlashLightActivity extends Activity implements SharedPreferences.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_about:
+                intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
         }

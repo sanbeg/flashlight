@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <TextView
+        android:paddingTop="20dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="#00ff00"
+        android:text="Demo Rating Schema" />
+    <TextView
+    	android:layout_margin="15dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Taking a few seconds to rate an app is very important for the developer. It allows us to continually improve the experience, and, helps other users decide whether an app is right for them. How about telling us what you think?" />
+    <TableLayout 
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:stretchColumns="*"
+    	android:layout_margin="15dip"
+    	android:gravity="center">
+    	<TableRow >
+		    <Button
+		        android:id="@+id/i_love_it"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:width="0dip"
+		        android:text="I love it!"/>
+		    <Button
+		        android:id="@+id/needs_work" 
+		        android:layout_height="wrap_content"
+		        android:layout_width="fill_parent"
+		        android:width="0dip"
+		        android:text="Needs work!"/>
+		    <Button
+		        android:id="@+id/maybe_later"
+		        android:layout_height="wrap_content" 
+		        android:layout_width="fill_parent"
+		        android:width="0dip"
+		        android:text="Maybe later."/>
+		</TableRow>
+	</TableLayout>
+</LinearLayout>
