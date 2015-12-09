@@ -10,37 +10,43 @@
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="#00ff00"
-        android:text="Demo Rating Schema" />
+        android:text="@string/about_rate_heading" />
     <TextView
-    	android:layout_margin="15dip"
+    	android:layout_margin="8dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Taking a few seconds to rate an app is very important for the developer. It allows us to continually improve the experience, and, helps other users decide whether an app is right for them. How about telling us what you think?" />
-    <TableLayout 
+        android:text="@string/about_rate_text" />
+    <LinearLayout
+		android:orientation="horizontal"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:stretchColumns="*"
-    	android:layout_margin="15dip"
-    	android:gravity="center">
-    	<TableRow >
+		android:gravity="center"
+		android:layout_margin="8dp">
+
 		    <Button
 		        android:id="@+id/i_love_it"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:width="0dip"
-		        android:text="I love it!"/>
+		        android:text="@string/about_pos_btn_text"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+                android:onClick="onClick" />
 		    <Button
 		        android:id="@+id/needs_work" 
-		        android:layout_height="wrap_content"
-		        android:layout_width="fill_parent"
 		        android:width="0dip"
-		        android:text="Needs work!"/>
+		        android:text="@string/about_neg_button_text"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+                android:onClick="onClick" />
 		    <Button
 		        android:id="@+id/maybe_later"
-		        android:layout_height="wrap_content" 
-		        android:layout_width="fill_parent"
 		        android:width="0dip"
-		        android:text="Maybe later."/>
-		</TableRow>
-	</TableLayout>
+		        android:text="@string/about_meh_btn_text"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+                android:onClick="onClick" />
+
+	</LinearLayout>
 </LinearLayout>

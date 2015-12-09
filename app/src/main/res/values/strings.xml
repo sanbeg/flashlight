@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Open FlashLight</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -14,4 +13,9 @@
     <string name="pref_long_press">long_press</string>
     <string name="pref_white">white</string>
     <string name="action_about_title">About</string>
+    <string name="about_rate_text">Taking a few seconds to rate an app is very important for the developer. It allows us to continually improve the experience, and helps other users decide whether an app is right for them. How about telling us what you think?</string>
+    <string name="about_pos_btn_text">Love It!</string>
+    <string name="about_neg_button_text">Needs Work</string>
+    <string name="about_meh_btn_text">Maybe Later</string>
+    <string name="about_rate_heading">Flashlight Rating</string>
 </resources>
