@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Open FlashLight</string>
+    <string name="app_name">Open Flashlight</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -18,4 +18,5 @@
     <string name="about_neg_button_text">Needs Work</string>
     <string name="about_meh_btn_text">Maybe Later</string>
     <string name="about_rate_heading">Flashlight Rating</string>
+    <string name="about_intro_text">Open Flashlight, by Steve Sanbeg.  This application is free software, distributed under the terms of the GNU GPL, version 3 or later.</string>
 </resources>

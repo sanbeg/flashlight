@@ -4,6 +4,11 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/about_intro_text"/>
+    <TextView
         android:paddingTop="20dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
