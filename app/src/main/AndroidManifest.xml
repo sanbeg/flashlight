@@ -31,7 +31,7 @@
 
             android:label="@string/title_activity_settings" >
         </activity>
-        <activity android:name=".AboutActivity" android:label="About" />
+        <activity android:name=".AboutActivity" android:label="About" android:icon="@drawable/ic_info_24dp" />
     </application>
 
 </manifest>
